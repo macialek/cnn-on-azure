@@ -1,0 +1,11 @@
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+name: TF_2_8_AzureML
+version: 1
+description: TensorFlow image build from DockerFile
+tags:
+  python: 3.9
+  tensorflow: 2.8
+  gpu: false
+build:
+  local_path: ../
+  dockerfile_path: environments/docker/Dockerfile
