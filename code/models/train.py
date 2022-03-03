@@ -1,6 +1,6 @@
 import argparse
 
-from azureml.core import Run
+from azureml.core import Run, Dataset
 import mlflow
 
 import tensorflow as tf
@@ -16,11 +16,18 @@ parser.add_argument('--epochs', type=float, dest='epochs', default=10, help='num
 
 args = parser.parse_args()
 
-# get Azure context
+# get Azure context and WorkSpace
 run = Run.get_context()
+ws = run.experiment.workspace
 
 # get input dataset by name and mount it
-dataset = run.input_datasets[args.dataset_name].as_mount()
+dataset = Dataset.get_by_name(ws, name=args.dataset_name)
+# dataset_input = DatasetConsumptionConfig("input_1", file_pipeline_param).as_mount()
+data_dir = 'dataset'
+dataset.download(target_path=data_dir, overwrite=False)
+
+# dataset = dataset.as_mount()
+# mount_point = run.input_datasets['input_1']
 
 
 # # define input image size
@@ -32,7 +39,7 @@ img_layers = 3
 batch_size = 32
 
 train_ds = tf.keras.utils.image_dataset_from_directory(
-    dataset,
+    data_dir,
     validation_split=0.2,
     subset="training",
     seed=123,
@@ -42,7 +49,7 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
     batch_size=batch_size)
 
 val_ds = tf.keras.utils.image_dataset_from_directory(
-    dataset,
+    data_dir,
     validation_split=0.2,
     subset="validation",
     seed=123,

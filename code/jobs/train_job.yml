@@ -1,15 +1,12 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: 
   local_path: /mnt/c/Users/maciej.michalek/repos/cnn-on-azure/code/models
-command: python train.py
-  # --dataset-name ${{inputs.dataset_name}}
-  # --learning-rate ${{inputs.learning_rate}}
-  # --epochs ${{inputs.epochs}}
-# inputs:
-#   dataset_name: "flowers"
-#   learning_rate: 0.001
-#   epochs: 6
-environment: azureml:tensorflow_2_7_conda:1
+command: python train.py --dataset-name ${{inputs.dataset_name}} --learning-rate ${{inputs.learning_rate}} --epochs ${{inputs.epochs}}
+inputs:
+  dataset_name: "flowers"
+  learning_rate: 0.001
+  epochs: 6
+environment: azureml:TF_2_8_AzureML:8
 compute: azureml:mjm-learn-compute
 experiment_name: CLI_interface_with_Tensorflow # name of the Experiment
 display_name: cnn_by_cli # name of the experiment run
