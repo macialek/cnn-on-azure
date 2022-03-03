@@ -1,0 +1,11 @@
+!poetry.lock
+!pyproject.toml
+!enviromnments
+!code
+.*
+docs
+data
+notebooks
+pipelines
+tests
+*.md
