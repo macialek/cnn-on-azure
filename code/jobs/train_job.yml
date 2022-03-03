@@ -1,0 +1,17 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: 
+  local_path: /mnt/c/Users/maciej.michalek/repos/cnn-on-azure
+command: >-
+  python code/models/train.py
+  --dataset-name ${{inputs.iris_csv}}
+  --learning-rate ${{inputs.C}}
+  --epochs ${{inputs.kernel}}
+inputs:
+  dataset-name: "flowers"
+  learning-rate: 0.001
+  epochs: 6
+environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cpu-inference:30
+compute: azureml:mjm-learn
+display_name: cnn_by_cli
+experiment_name: testing CLI interface with Tensorflow
+description: Train an image classification model using Tensorflow
