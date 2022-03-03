@@ -14,7 +14,6 @@ parser.add_argument('--dataset-name', type=str, dest='dataset_name', help='datas
 parser.add_argument('--learning-rate', type=float, dest='learning_rate', default=0.001, help='learning rate')
 parser.add_argument('--epochs', type=float, dest='epochs', default=10, help='number of training epochs')
 
-
 args = parser.parse_args()
 
 # get Azure context
@@ -23,12 +22,13 @@ run = Run.get_context()
 # get input dataset by name and mount it
 dataset = run.input_datasets[args.dataset_name].as_mount()
 
-# define input image size
+
+# # define input image size
 img_height = 224
 img_width = 224
 img_layers = 3
 
-# prepare datasets
+# # prepare datasets
 batch_size = 32
 
 train_ds = tf.keras.utils.image_dataset_from_directory(
