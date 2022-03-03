@@ -1,0 +1,10 @@
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+name: tensorflow_2_7_conda
+image: mcr.microsoft.com/azureml/tensorflow-2.4-ubuntu18.04-py37-cpu-inference:20220222.v4
+conda_file: conda.yml
+description: TF2.7 environment created from a curated MS image plus Conda environment.
+tags:
+  python: 3.7
+  tensorflow: 2.7
+  gpu: false
+version: 1
