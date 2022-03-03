@@ -9,6 +9,7 @@ python = ">=3.9,<3.11"
 azureml-core = "^1.39.0"
 azureml-mlflow = "^1.39.0"
 tensorflow = {extras = ["cpu"], version = "^2.8.0"}
+azureml-dataset-runtime = "^1.39.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
