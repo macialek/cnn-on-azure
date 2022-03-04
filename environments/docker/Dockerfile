@@ -3,26 +3,44 @@
 # ************************************************
 # Base image
 # ************************************************
-FROM python:3.9 as base
+FROM python:3.9-slim-buster as base
 
+ARG DEBIAN_FRONTEND=noninteractive
 ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    TZ=Etc/UTC
 
 
 # ************************************************
 # Builder image
 # ************************************************
 FROM base as builder
+ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update -y \
     && apt install --no-install-recommends -y \
-        curl build-essential cmake libopenblas-dev liblapack-dev libjpeg-dev ssh git zip unzip
+        python3-dev \
+        wget \
+        curl \
+        build-essential \
+        cmake \
+        libopenblas-dev \
+        liblapack-dev \
+        libjpeg-dev \
+        libssl-dev \
+        libffi-dev \
+        cargo \
+        ssh \
+        git \
+        gzip \
+    && apt clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # POETRY installation
 ENV POETRY_HOME=/etc/poetry \
     POETRY_VERSION=1.1.13 \
     POETRY_VIRTUALENVS_CREATE=false \
     POETRY_NO_INTERACTION=1
-RUN curl -sSL https://install.python-poetry.org | python3 -
+RUN curl -sSL https://install.python-poetry.org | python -
 
 # dependencies installation via POETRY
 COPY ./pyproject.toml ./poetry.lock ./

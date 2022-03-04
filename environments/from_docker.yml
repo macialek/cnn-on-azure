@@ -6,6 +6,7 @@ tags:
   python: 3.9
   tensorflow: 2.8
   gpu: false
+  os: Debian10
 build:
   local_path: ../
   dockerfile_path: environments/docker/Dockerfile
