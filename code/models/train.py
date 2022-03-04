@@ -1,4 +1,5 @@
 import argparse
+from unicodedata import name
 
 from azureml.core import Run, Dataset
 import mlflow
@@ -73,6 +74,7 @@ def main(args: argparse.Namespace):
 
     # Datasets performance tuning
     num_classes = len(train_ds.class_names)
+    print(f'Number of classes: {num_classes:n}')
     AUTOTUNE = tf.data.AUTOTUNE
     train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
     val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
@@ -83,7 +85,7 @@ def main(args: argparse.Namespace):
     # define TF model
     model = Sequential(
         [
-            layers.Rescaling(1.0 / 255, input_shape=(img_height, img_width, 3)),
+            layers.Rescaling(1.0 / 255, input_shape=(img_height, img_width, img_layers)),
             layers.Conv2D(16, 3, padding="same", activation="relu"),
             layers.MaxPooling2D(),
             layers.Conv2D(32, 3, padding="same", activation="relu"),
@@ -100,12 +102,11 @@ def main(args: argparse.Namespace):
     model.compile(
         optimizer="adam",
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-        metrics=[tf.keras.metrics.Accuracy()],
+        metrics=['accuracy'],
     )
 
     # train process
-    with mlflow.start_run(run_name="simple CNN"):
-        history = model.fit(train_ds, validation_data=val_ds, epochs=args.epochs)
+    history = model.fit(train_ds, validation_data=val_ds, epochs=args.epochs)
 
 if __name__ == "__main__":
     # parse args
