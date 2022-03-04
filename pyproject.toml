@@ -12,6 +12,7 @@ azureml-contrib-dataset = "^1.39.0"
 numpy = "^1.22.2"
 pandas = "^1.4.1"
 tensorflow-cpu = "^2.8.0"
+mlflow-skinny = "^1.23.1"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
