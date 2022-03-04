@@ -2,9 +2,10 @@ name: example
 channels:
   - conda-forge
 dependencies:
-  - python=3.7
+  - python=3.9
   - pip=21.2.4
-  - tensorflow=2.7.0
   - pip:
     - azureml-mlflow==1.39.0
     - azureml-core==1.39.0
+    - azureml-contrib-dataset==1.39.0
+    - tensorflow-cpu==2.8.0
