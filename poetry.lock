@@ -200,6 +200,18 @@ azure-mgmt-core = ">=1.3.0,<2.0.0"
 msrest = ">=0.6.21"
 
 [[package]]
+name = "azureml-contrib-dataset"
+version = "1.39.0"
+description = "Contains experimental Dataset features for the azureml-core package."
+category = "main"
+optional = false
+python-versions = ">=3.6,<4"
+
+[package.dependencies]
+azureml-core = ">=1.39.0,<1.40.0"
+azureml-dataset-runtime = {version = ">=1.39.0,<1.40.0", extras = ["fuse", "pandas"]}
+
+[[package]]
 name = "azureml-core"
 version = "1.39.0"
 description = "Azure Machine Learning core packages, modules, and classes"
@@ -291,10 +303,13 @@ python-versions = "*"
 
 [package.dependencies]
 azureml-dataprep = ">=2.27.1a,<2.28.0a"
+fusepy = {version = ">=3.0.1,<4.0.0", optional = true, markers = "extra == \"fuse\""}
 numpy = [
     {version = "!=1.19.3", markers = "sys_platform == \"linux\""},
     {version = "!=1.19.4", markers = "sys_platform == \"win32\""},
+    {version = ">=1.14.0,<2.0.0", optional = true, markers = "extra == \"pandas\""},
 ]
+pandas = {version = ">=0.23.4,<2.0.0", optional = true, markers = "extra == \"pandas\""}
 pyarrow = ">=0.17.0,<4.0.0"
 
 [package.extras]
@@ -562,6 +577,14 @@ pyflakes = ">=2.4.0,<2.5.0"
 name = "flatbuffers"
 version = "2.0"
 description = "The FlatBuffers serialization format for Python"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
+name = "fusepy"
+version = "3.0.1"
+description = "Simple ctypes bindings for FUSE"
 category = "main"
 optional = false
 python-versions = "*"
@@ -1003,6 +1026,26 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 pyparsing = ">=2.0.2,<3.0.5 || >3.0.5"
+
+[[package]]
+name = "pandas"
+version = "1.4.1"
+description = "Powerful data structures for data analysis, time series, and statistics"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+numpy = [
+    {version = ">=1.18.5", markers = "platform_machine != \"aarch64\" and platform_machine != \"arm64\" and python_version < \"3.10\""},
+    {version = ">=1.19.2", markers = "platform_machine == \"aarch64\" and python_version < \"3.10\""},
+    {version = ">=1.20.0", markers = "platform_machine == \"arm64\" and python_version < \"3.10\""},
+]
+python-dateutil = ">=2.8.1"
+pytz = ">=2020.1"
+
+[package.extras]
+test = ["hypothesis (>=5.5.3)", "pytest (>=6.0)", "pytest-xdist (>=1.31)"]
 
 [[package]]
 name = "paramiko"
@@ -1535,7 +1578,7 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "tensorflow"
+name = "tensorflow-cpu"
 version = "2.8.0"
 description = "TensorFlow is an open source machine learning framework for everyone."
 category = "main"
@@ -1670,8 +1713,8 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 
 [metadata]
 lock-version = "1.1"
-python-versions = ">=3.9,<3.11"
-content-hash = "b6a19c93a9be54c657d2d3932e8b641afddf9eebd9d70a5a514e289792d476a3"
+python-versions = ">=3.8,<3.10"
+content-hash = "22b6485d772428c0fdb93410b8f1218c1837840eff79d78970822b4390317688"
 
 [metadata.files]
 absl-py = [
@@ -1741,6 +1784,9 @@ azure-mgmt-resource = [
 azure-mgmt-storage = [
     {file = "azure-mgmt-storage-19.1.0.zip", hash = "sha256:49ea22f00e0965a3550af34a41c1a1d3a481690f6500c78e85408802f56d7416"},
     {file = "azure_mgmt_storage-19.1.0-py3-none-any.whl", hash = "sha256:61c7a55395e7410a24bfc8def353429eb772a105dd8268dce91f5ee38e4fc04e"},
+]
+azureml-contrib-dataset = [
+    {file = "azureml_contrib_dataset-1.39.0-py3-none-any.whl", hash = "sha256:651fbb6f915527f44e55f7f587e58d6efb1d0561582dbd6ecd92d7c39cb74b98"},
 ]
 azureml-core = [
     {file = "azureml_core-1.39.0-py3-none-any.whl", hash = "sha256:e8ccce2644fe09ca345b3e27a6019f47594173063c2541d83963944ca5dde36d"},
@@ -1972,6 +2018,9 @@ flake8 = [
 flatbuffers = [
     {file = "flatbuffers-2.0-py2.py3-none-any.whl", hash = "sha256:3751954f0604580d3219ae49a85fafec9d85eec599c0b96226e1bc0b48e57474"},
     {file = "flatbuffers-2.0.tar.gz", hash = "sha256:12158ab0272375eab8db2d663ae97370c33f152b27801fa6024e1d6105fd4dd2"},
+]
+fusepy = [
+    {file = "fusepy-3.0.1.tar.gz", hash = "sha256:72ff783ec2f43de3ab394e3f7457605bf04c8cf288a2f4068b4cde141d4ee6bd"},
 ]
 gast = [
     {file = "gast-0.5.3-py3-none-any.whl", hash = "sha256:211aac1e58c167b25d3504998f2db694454a24bb1fb1225bce99420166f21d6a"},
@@ -2232,6 +2281,29 @@ opt-einsum = [
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},
     {file = "packaging-21.3.tar.gz", hash = "sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb"},
+]
+pandas = [
+    {file = "pandas-1.4.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:3dfb32ed50122fe8c5e7f2b8d97387edd742cc78f9ec36f007ee126cd3720907"},
+    {file = "pandas-1.4.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:0259cd11e7e6125aaea3af823b80444f3adad6149ff4c97fef760093598b3e34"},
+    {file = "pandas-1.4.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:96e9ece5759f9b47ae43794b6359bbc54805d76e573b161ae770c1ea59393106"},
+    {file = "pandas-1.4.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:508c99debccd15790d526ce6b1624b97a5e1e4ca5b871319fb0ebfd46b8f4dad"},
+    {file = "pandas-1.4.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e6a7bbbb7950063bfc942f8794bc3e31697c020a14f1cd8905fc1d28ec674a01"},
+    {file = "pandas-1.4.1-cp310-cp310-win_amd64.whl", hash = "sha256:c614001129b2a5add5e3677c3a213a9e6fd376204cb8d17c04e84ff7dfc02a73"},
+    {file = "pandas-1.4.1-cp38-cp38-macosx_10_9_universal2.whl", hash = "sha256:4e1176f45981c8ccc8161bc036916c004ca51037a7ed73f2d2a9857e6dbe654f"},
+    {file = "pandas-1.4.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:bbb15ad79050e8b8d39ec40dd96a30cd09b886a2ae8848d0df1abba4d5502a67"},
+    {file = "pandas-1.4.1-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:6d6ad1da00c7cc7d8dd1559a6ba59ba3973be6b15722d49738b2be0977eb8a0c"},
+    {file = "pandas-1.4.1-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:358b0bc98a5ff067132d23bf7a2242ee95db9ea5b7bbc401cf79205f11502fd3"},
+    {file = "pandas-1.4.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6105af6533f8b63a43ea9f08a2ede04e8f43e49daef0209ab0d30352bcf08bee"},
+    {file = "pandas-1.4.1-cp38-cp38-win32.whl", hash = "sha256:04dd15d9db538470900c851498e532ef28d4e56bfe72c9523acb32042de43dfb"},
+    {file = "pandas-1.4.1-cp38-cp38-win_amd64.whl", hash = "sha256:1b384516dbb4e6aae30e3464c2e77c563da5980440fbdfbd0968e3942f8f9d70"},
+    {file = "pandas-1.4.1-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:f02e85e6d832be37d7f16cf6ac8bb26b519ace3e5f3235564a91c7f658ab2a43"},
+    {file = "pandas-1.4.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:0b1a13f647e4209ed7dbb5da3497891d0045da9785327530ab696417ef478f84"},
+    {file = "pandas-1.4.1-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:19f7c632436b1b4f84615c3b127bbd7bc603db95e3d4332ed259dc815c9aaa26"},
+    {file = "pandas-1.4.1-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7ea47ba1d6f359680130bd29af497333be6110de8f4c35b9211eec5a5a9630fa"},
+    {file = "pandas-1.4.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2e5a7a1e0ecaac652326af627a3eca84886da9e667d68286866d4e33f6547caf"},
+    {file = "pandas-1.4.1-cp39-cp39-win32.whl", hash = "sha256:1d85d5f6be66dfd6d1d8d13b9535e342a2214260f1852654b19fa4d7b8d1218b"},
+    {file = "pandas-1.4.1-cp39-cp39-win_amd64.whl", hash = "sha256:3129a35d9dad1d80c234dd78f8f03141b914395d23f97cf92a366dcd19f8f8bf"},
+    {file = "pandas-1.4.1.tar.gz", hash = "sha256:8db93ec98ac7cb5f8ac1420c10f5e3c43533153f253fe7fb6d891cf5aa2b80d2"},
 ]
 paramiko = [
     {file = "paramiko-2.9.2-py2.py3-none-any.whl", hash = "sha256:04097dbd96871691cdb34c13db1883066b8a13a0df2afd4cb0a92221f51c2603"},
@@ -2526,19 +2598,19 @@ tensorboard-data-server = [
 tensorboard-plugin-wit = [
     {file = "tensorboard_plugin_wit-1.8.1-py3-none-any.whl", hash = "sha256:ff26bdd583d155aa951ee3b152b3d0cffae8005dc697f72b44a8e8c2a77a8cbe"},
 ]
-tensorflow = [
-    {file = "tensorflow-2.8.0-cp310-cp310-macosx_10_14_x86_64.whl", hash = "sha256:78c3ba2e0c952aa9eb388200f1923e40287f9357492a464188ca3043e35edc52"},
-    {file = "tensorflow-2.8.0-cp310-cp310-manylinux2010_x86_64.whl", hash = "sha256:2a520538e77a52fb428acb05e300c960844fd1d2c3918ca8ca14127edba6f83b"},
-    {file = "tensorflow-2.8.0-cp310-cp310-win_amd64.whl", hash = "sha256:b7170844ae6b048d82a9d7a61b2fa627f2e16cb829267bf0ce4b3a0de0a61054"},
-    {file = "tensorflow-2.8.0-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:fa4a723368d5f748b6f4ec305cf7c26b98e4a6a8c2ce1425f8ae10383a37bcfc"},
-    {file = "tensorflow-2.8.0-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:05fb161c6b2a6c4b8317a703a0a6d7f7aa6b5e3c6ea31bbc4f44ef96b89c3344"},
-    {file = "tensorflow-2.8.0-cp37-cp37m-win_amd64.whl", hash = "sha256:291fa84f1022914580810ad76732fb254e44a8a609128e1c58873a12b2f81559"},
-    {file = "tensorflow-2.8.0-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:dd0f9f113ebc21b73fcd349db1629e187b8686395b8146d100eb1706a943bbc0"},
-    {file = "tensorflow-2.8.0-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:8489b4f1771e146f752b0eaeb57acf183bd07357e4550464e7dff18b3b656b5d"},
-    {file = "tensorflow-2.8.0-cp38-cp38-win_amd64.whl", hash = "sha256:da38d4043185267e7316ae5dc98d18e89c8af4170859f64798e7a3607fd606e3"},
-    {file = "tensorflow-2.8.0-cp39-cp39-macosx_10_14_x86_64.whl", hash = "sha256:52f225fecc688281b3ae2cba2b52d3ed6215ed4a3ffb686b9cfd09885ca65563"},
-    {file = "tensorflow-2.8.0-cp39-cp39-manylinux2010_x86_64.whl", hash = "sha256:9d91a989e5455ae713c03fd7236071ab3f232ad8ff2831f2658072933546091f"},
-    {file = "tensorflow-2.8.0-cp39-cp39-win_amd64.whl", hash = "sha256:b360c13b3e58b9a5c0780cbdb6b549eea73f620275fa203f8508fe418ae02735"},
+tensorflow-cpu = [
+    {file = "tensorflow_cpu-2.8.0-cp310-cp310-macosx_10_14_x86_64.whl", hash = "sha256:119c8b1608884ba4d044660ebd2e025679db544bdc93e69cef7d974f1d70df2b"},
+    {file = "tensorflow_cpu-2.8.0-cp310-cp310-manylinux2010_x86_64.whl", hash = "sha256:60f7f3258906c6e0753b4a57b461acc2d4360f367714b0bc684b9456658a31ea"},
+    {file = "tensorflow_cpu-2.8.0-cp310-cp310-win_amd64.whl", hash = "sha256:0399da0d90d13a4601f9c1fca89c8c6c4524698bbb8cd2befff2413e25c64415"},
+    {file = "tensorflow_cpu-2.8.0-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:f7b8bac2a70b26c54d222637899120b0025110690411dd4ab270c72f5193e692"},
+    {file = "tensorflow_cpu-2.8.0-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:a0cf3a5dd40f056a5a4f3f7be0b616c5bdfbf850e4782f2467f9e16d4144eadb"},
+    {file = "tensorflow_cpu-2.8.0-cp37-cp37m-win_amd64.whl", hash = "sha256:46cfe5fcc5d5ceb2497b8b28c54f1f6c6007b54a56a59e477e4fe1f9b70b1a8b"},
+    {file = "tensorflow_cpu-2.8.0-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:73f64ce835a4ba38587b8bdb5d41428d99b8321a3e93d00677ed6941d5e753b5"},
+    {file = "tensorflow_cpu-2.8.0-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:1e6bc4036d52f6360e8a67c25d20b75aef3d69812b262e201cbc34fb297d22d2"},
+    {file = "tensorflow_cpu-2.8.0-cp38-cp38-win_amd64.whl", hash = "sha256:103a687e33ffe201e492a3d58a59759e525311adac305e9694156d0b273eae34"},
+    {file = "tensorflow_cpu-2.8.0-cp39-cp39-macosx_10_14_x86_64.whl", hash = "sha256:4dd0b34d16774f4636604d89ee814252a7e21ef4ae61734f4839c6173a60aca3"},
+    {file = "tensorflow_cpu-2.8.0-cp39-cp39-manylinux2010_x86_64.whl", hash = "sha256:783e86af209747738a2a01540fc697a74467ce432a4527969960c13095af5c0f"},
+    {file = "tensorflow_cpu-2.8.0-cp39-cp39-win_amd64.whl", hash = "sha256:9205b54b6dc34e5824c54ef58296b440af5d580be412038fe6e35f9f894a887f"},
 ]
 tensorflow-io-gcs-filesystem = [
     {file = "tensorflow_io_gcs_filesystem-0.24.0-cp310-cp310-macosx_10_14_x86_64.whl", hash = "sha256:9c00f9a9880477b1dff0c71ee6734421ce99ac484ca2151793ebf2681fc0cb4c"},
