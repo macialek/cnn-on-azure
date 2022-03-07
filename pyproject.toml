@@ -6,7 +6,7 @@ authors = ["Maciej Michałek <maciej.michalek@lingaro.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.10"
-azureml-core = "^1.39.0"
+azureml-defaults = "^1.39.0"
 azureml-mlflow = "^1.39.0"
 azureml-contrib-dataset = "^1.39.0"
 numpy = "^1.22.2"
