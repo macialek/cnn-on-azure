@@ -8,14 +8,13 @@ command: >-
   --learning-rate ${{inputs.learning_rate}}
   --epochs ${{inputs.epochs}}
 inputs:
-  dataset_name: "flowers"
   images:
     dataset: azureml:flowers:1
     mode: ro_mount
   learning_rate: 0.001
   epochs: 6
 environment: azureml:TF_2_8_AzureML:1
-compute: azureml:mjm-compute
+compute: azureml:mjm-learn
 experiment_name: CLI_interface_with_Tensorflow # name of the Experiment
 display_name: cnn_by_cli_download # name of the experiment run
 description: Train an image classification model using Tensorflow

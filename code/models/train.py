@@ -18,7 +18,6 @@ def parse_args() -> argparse.Namespace:
     """
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--dataset-name", type=str, dest="dataset_name", help="dataset used to train name")
     parser.add_argument("--dataset-dir", type=str, dest="dataset_dir", help="mounted dataset directory")
     parser.add_argument("--learning-rate", type=float, dest="learning_rate", default=0.001, help="learning rate")
     parser.add_argument("--epochs", type=int, dest="epochs", default=10, help="number of training epochs")
@@ -31,17 +30,6 @@ def main(args: argparse.Namespace):
     run = Run.get_context()
     ws = run.experiment.workspace
 
-    # get input dataset by name and mount it
-    # dataset = Dataset.get_by_name(ws, name=args.dataset_name)
-    # dataset_input = dataset.as_named_input('input').as_mount()
-    # data_dir = "dataset"
-    # dataset.download(target_path=data_dir, overwrite=False)
-    data_dir = args.dataset_dir
-    print(data_dir)
-
-    # dataset = dataset.as_mount()
-    # mount_point = run.input_datasets['input_1']
-
     # # define input image size
     img_height = 224
     img_width = 224
@@ -51,7 +39,7 @@ def main(args: argparse.Namespace):
     batch_size = 32
 
     train_ds = tf.keras.utils.image_dataset_from_directory(
-        data_dir,
+        args.dataset_dir,
         validation_split=0.2,
         subset="training",
         seed=123,
@@ -62,7 +50,7 @@ def main(args: argparse.Namespace):
     )
 
     val_ds = tf.keras.utils.image_dataset_from_directory(
-        data_dir,
+        args.dataset_dir,
         validation_split=0.2,
         subset="validation",
         seed=123,
