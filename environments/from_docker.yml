@@ -7,6 +7,7 @@ tags:
   tensorflow: 2.8
   gpu: false
   os: Ubuntu20.04
+  inference: false
 build:
   local_path: ../
   dockerfile_path: environments/docker/Dockerfile

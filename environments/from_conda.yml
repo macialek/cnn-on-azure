@@ -2,9 +2,10 @@ $schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
 name: tensorflow_2_8_conda
 image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
 conda_file: conda.yml
-description: TF2.7 environment created from a curated MS image plus Conda environment.
+description: TF2.8 environment created from a curated MS image plus Conda environment.
 tags:
   python: 3.9
   tensorflow: 2.8
   gpu: false
+  inference: true
 version: 1
