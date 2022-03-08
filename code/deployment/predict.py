@@ -6,6 +6,7 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
+
 def init():
     """
     This function is called when the container is initialized/started, typically after create/update of the deployment.
@@ -17,7 +18,7 @@ def init():
     model_path = os.getenv("AZUREML_MODEL_DIR")
 
     # load TF model into memory
-    model = tf.keras.models.load_model(os.path.join(model_path, 'model'))
+    model = tf.keras.models.load_model(os.path.join(model_path, "model"))
     logger.info("Init complete")
 
 
@@ -30,21 +31,19 @@ def run(raw_data):
     try:
         data = json.loads(raw_data)
     except Exception as e:
-        message = f'Unable to process input JSON data: {e}'
+        message = f"Unable to process input JSON data: {e}"
         logger.exception(message)
-        return {'exception': message}
+        return {"exception": message}
 
-    image_path = tf.keras.utils.get_file('image', origin=data['image_url'])
+    image_path = tf.keras.utils.get_file("image", origin=data["image_url"])
 
-    img = tf.keras.utils.load_img(
-        image_path, target_size=(224, 224)
-    )
+    img = tf.keras.utils.load_img(image_path, target_size=(224, 224))
     img_array = tf.keras.utils.img_to_array(img)
     img_array = tf.expand_dims(img_array, 0)  # Create a batch
 
     predictions = model.predict(img_array)
     score = tf.nn.softmax(predictions[0])
 
-    answer = {'image_url': data['image_url'], 'class': 'np.argmax(score)', 'probability': 100 * np.max(score)}
+    answer = {"image_url": data["image_url"], "class": np.argmax(score), "probability": 100 * np.max(score)}
     logger.info("Request processed")
     return answer
